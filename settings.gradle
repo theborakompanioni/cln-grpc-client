@@ -1,0 +1,4 @@
+rootProject.name = 'cln-grpc-client'
+
+include 'cln-grpc-client:cln-grpc-client-core'
+
