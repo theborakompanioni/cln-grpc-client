@@ -8,6 +8,8 @@ ext {
     checkstyleVersion = '10.3.4'
     protobufGradleVersion = '0.9.2'
     junitVersion = '5.9.3'
+    springBootGradlePluginVersion = '3.1.0'
+    bitcoinSpringBootStarterVersion = '0.8.0'
 }
 
 // hack: 2021-11-10T00:00Z - change this timestamp to invalidate GitHub Actions gradle caches.

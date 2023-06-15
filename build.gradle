@@ -1,6 +1,7 @@
 import io.franzbecker.gradle.lombok.task.DelombokTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
     apply from: 'versions.gradle'
@@ -8,6 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootGradlePluginVersion}")
         classpath("com.google.protobuf:protobuf-gradle-plugin:${protobufGradleVersion}")
     }
 }
@@ -85,12 +87,19 @@ subprojects {
     apply plugin: 'nebula.info'
     apply plugin: 'com.netflix.nebula.integtest-standalone'
     apply plugin: 'io.franzbecker.gradle-lombok'
+    apply plugin: 'io.spring.dependency-management'
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
     repositories {
         mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
     }
 
     dependencies {
@@ -100,6 +109,10 @@ subprojects {
 
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
     }
 
     compileJava {

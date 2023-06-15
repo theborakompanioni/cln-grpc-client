@@ -1,0 +1,47 @@
+
+org.tbk.spring.testcontainer.cln:
+  enabled: true
+  port: 19735
+  commands:
+    - '--alias=tbk-cln-grpc-client-test'
+    - '--bitcoin-rpcuser=this-is-my-rpc-user99'
+    - '--bitcoin-rpcpassword=correct_horse_battery_staple_99'
+    - '--grpc-port=19935'
+
+org.tbk.lightning.cln.grpc:
+  host: localhost
+  port: 19935
+  shutdown-timeout: PT3S
+  # path to the tls files within the container!
+  client-cert-file-path: '/root/.lightning/regtest/client.pem' #'/home/clightning/.lightning/regtest/client.pem'
+  client-key-file-path: '/root/.lightning/regtest/client-key.pem' #'/home/clightning/.lightning/regtest/client-key.pem'
+  ca-cert-file-path: '/root/.lightning/regtest/ca.pem' #'/home/clightning/.lightning/regtest/ca.pem'
+
+org.tbk.spring.testcontainer.bitcoind:
+  enabled: true
+  rpcuser: this-is-my-rpc-user99
+  rpcpassword: correct_horse_battery_staple_99
+  exposed-ports:
+    - 28332
+    - 28333
+  commands:
+    # [zeromq]
+    # Enable publishing of raw block hex to <address>.
+    - '-zmqpubrawblock=tcp://0.0.0.0:28332'
+    # Enable publishing of raw transaction hex to <address>.
+    - '-zmqpubrawtx=tcp://0.0.0.0:28333'
+    # [rpc]
+    # Number of seconds after which an uncompleted RPC call will time out
+    - '-rpcservertimeout=10' # default is 30
+    # [debug]
+    # Enable debug logging for categories.
+    # '-debug=1' would log ALL messages
+    - '-debug=rpc'
+    # Log IP Addresses in debug output.
+    - '-logips=1'
+    # Append comment to the user agent string.
+    - '-uacomment=tbk-bitcoin-regtest-example'
+    # Allows you to test address relay on localhost.
+    - '-addrmantest=1'
+    # Send trace/debug info to console instead of debug.log.
+    - '-printtoconsole=1'
