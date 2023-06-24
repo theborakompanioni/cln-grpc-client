@@ -6,5 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/theborakompanioni/cln-grpc-client/compare/0.1.0...HEAD
-[0.1.0]: https://github.com/theborakompanioni/cln-grpc-client/releases/tag/0.1.0
+## [23.5.1] - 2023-06-24
+Initial release based on CLN [v23.05.1](https://github.com/ElementsProject/lightning/releases/tag/v23.05.1).
+
+
+[Unreleased]: https://github.com/theborakompanioni/cln-grpc-client/compare/23.05.1...HEAD
+[23.5.1]: https://github.com/theborakompanioni/cln-grpc-client/releases/tag/23.05.1
