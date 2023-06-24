@@ -13,7 +13,6 @@ import org.tbk.lightning.cln.grpc.config.ClnContainerRpcClientAutoConfiguration;
 import org.tbk.spring.testcontainer.bitcoind.config.BitcoindContainerAutoConfiguration;
 import org.tbk.spring.testcontainer.cln.ClnContainer;
 import org.tbk.spring.testcontainer.cln.config.ClnContainerAutoConfiguration;
-import org.testcontainers.shaded.org.bouncycastle.util.encoders.Hex;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -112,7 +111,7 @@ class ClnGrpcClientIntegrationTest {
      ************************************************************/
 
     /************************************************************
-     * listpays
+     * decodePay
      **/
     @Test
     void itShouldSuccessfullyInvokeDecodePayBlocking() {
@@ -124,18 +123,42 @@ class ClnGrpcClientIntegrationTest {
                 .build());
 
         assertThat(response, is(notNullValue()));
-        assertThat(response.getAmountMsat().getMsat(), is(1500000L));
+        assertThat(response.getAmountMsat().getMsat(), is(1_500_000L));
         assertThat(response.getPaymentHash(), equalTo(ByteString.fromHex("90570c8d3688ad5012aa5ff982606971ae46b3f9df0a100cb15f05f61718f223")));
         assertThat(response.getDescription(), is("bolt11.org"));
         assertThat(response.getExpiry(), is(600L));
         assertThat(response.getMinFinalCltvExpiry(), is(40));
         assertThat(response.hasFeatures(), is(true));
     }
-
     /**
-     * listpays - end
+     * decodePay - end
      ************************************************************/
 
+    /************************************************************
+     * invoice
+     **/
+    @Test
+    void itShouldSuccessfullyInvokeInvoiceBlocking() {
+        InvoiceResponse response = clnNodeBlockingStub.invoice(InvoiceRequest.newBuilder()
+                .setAmountMsat(AmountOrAny.newBuilder()
+                        .setAmount(Amount.newBuilder().setMsat(21_000L).build())
+                        .build())
+                .setDescription("The Times 03/Jan/2009 Chancellor on brink of second bailout for banks")
+                .build());
+
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getBolt11(), startsWith("lnbcrt"));
+        assertThat(response.getPaymentHash(), is(notNullValue()));
+    }
+    /**
+     * invoice - end
+     ************************************************************/
+
+    /**
+     * gRPC StreamObserver to projectreactor Flux adapter
+     *
+     * @param <T> type of the objects emitted
+     */
     @RequiredArgsConstructor
     static class EmittingStreamObserver<T> implements StreamObserver<T> {
 
