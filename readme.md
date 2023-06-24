@@ -92,6 +92,21 @@ is used for checking Java source code for adherence to a Code Standard.
 ./gradlew spotbugsMain --rerun-tasks
 ```
 
+### Troubleshooting
+
+#### `ManagedChannelProvider$ProviderNotFoundException`
+```
+Caused by: io.grpc.ManagedChannelProvider$ProviderNotFoundException: No functional channel service provider found. Try adding a dependency on the grpc-okhttp, grpc-netty, or grpc-netty-shaded artifact
+```
+
+add a channel service provider implementation, e.g.
+```groovy
+implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+```
+
+Hint: The above section should currently not apply, as `grpc-netty-shaded` is included as dependency.
+However, this dependency might be removed in future releases.
+
 
 ## Contributing
 All contributions and ideas are always welcome. For any question, bug or feature request, 
@@ -105,6 +120,7 @@ Before you start, please read the [contributing guidelines](contributing.md).
 - Lightning Network: https://lightning.network
 ---
 - cln (GitHub): https://github.com/ElementsProject/lightning ([Docker](https://hub.docker.com/r/polarlightning/clightning))
+- cln protobuf: https://github.com/ElementsProject/lightning/tree/master/cln-grpc/proto
 - Protocol Buffers: https://protobuf.dev/
 - gRPC: https://grpc.io/
 
