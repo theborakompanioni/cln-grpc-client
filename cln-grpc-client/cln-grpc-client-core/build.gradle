@@ -9,6 +9,8 @@ description = 'cln grpc client package'
 dependencies {
     api "io.grpc:grpc-protobuf:${grpcVersion}"
     api "io.grpc:grpc-stub:${grpcVersion}"
+    // grpc-api is added in order for downstream projects to consume classes like `StatusRuntimeException`, etc.
+    api "io.grpc:grpc-api:${grpcVersion}"
 
     // see https://github.com/grpc/grpc-java/issues/3556 why this dependency is needed
     api "io.grpc:grpc-netty-shaded:${grpcVersion}"

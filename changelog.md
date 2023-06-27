@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- added dependency to `io.grpc:grpc-api` to use classes like `StatusRuntimeException`, etc.
+
 ### Changed
 - upgrade: update grpc from v1.54.1 to v1.56.0
 - upgrade: update protobuf from v3.21.12 to v3.22.3
