@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+Release based on CLN [v23.05.2](https://github.com/ElementsProject/lightning/releases/tag/v23.05.2).
+
 ### Added
 - added dependency to `io.grpc:grpc-api` to use classes like `StatusRuntimeException`, etc.
 
