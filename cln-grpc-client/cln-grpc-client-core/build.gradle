@@ -12,10 +12,11 @@ dependencies {
     // grpc-api is added in order for downstream projects to consume classes like `StatusRuntimeException`, etc.
     api "io.grpc:grpc-api:${grpcVersion}"
 
-    // see https://github.com/grpc/grpc-java/issues/3556 why this dependency is needed
+    // See https://github.com/grpc/grpc-java/issues/3556 why this dependency is needed.
+    // Docs: https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
     api "io.grpc:grpc-netty-shaded:${grpcVersion}"
 
-    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    compileOnly 'javax.annotation:javax.annotation-api:1.3.2'
 
     integTestImplementation "io.projectreactor:reactor-core"
     //integTestImplementation "io.github.theborakompanioni:bitcoin-regtest-starter:${bitcoinSpringBootStarterVersion}"
