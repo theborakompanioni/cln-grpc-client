@@ -58,7 +58,7 @@ implementation "io.github.theborakompanioni:cln-grpc-client-core:${clnGrpcClient
 ```shell script
 ./gradlew build -x test
 ```
- 
+
 ### Test
 ```shell script
 ./gradlew test integrationTest --rerun-tasks
@@ -107,10 +107,13 @@ implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
 Hint: The above section should currently not apply, as `grpc-netty-shaded` is included as dependency.
 However, this dependency might be removed in future releases.
 
+#### Error loading shared library `libio_grpc_netty_shaded_netty_tcnative-*.so`
+
+See: https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
 
 ## Contributing
-All contributions and ideas are always welcome. For any question, bug or feature request, 
-please create an [issue](https://github.com/theborakompanioni/cln-grpc-client/issues). 
+All contributions and ideas are always welcome. For any question, bug or feature request,
+please create an [issue](https://github.com/theborakompanioni/cln-grpc-client/issues).
 Before you start, please read the [contributing guidelines](contributing.md).
 
 
@@ -123,6 +126,8 @@ Before you start, please read the [contributing guidelines](contributing.md).
 - cln protobuf: https://github.com/ElementsProject/lightning/tree/master/cln-grpc/proto
 - Protocol Buffers: https://protobuf.dev/
 - gRPC: https://grpc.io/
+- grpc-java (GitHub): https://github.com/grpc/grpc-java
+- grpc-java Security: https://github.com/grpc/grpc-java/blob/master/SECURITY.md
 
 ## License
 
