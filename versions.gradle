@@ -1,5 +1,5 @@
 ext {
-    clnVersion = 'v23.08'
+    clnVersion = 'v23.08.1'
     grpcVersion = '1.56.0'
     protobufVersion = '3.22.3'
     protocVersion = protobufVersion
