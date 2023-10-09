@@ -1,6 +1,7 @@
 
 org.tbk.spring.testcontainer.cln:
   enabled: true
+  image: 'polarlightning/clightning:23.08'
   port: 19735
   commands:
     - '--alias=tbk-cln-grpc-client-test'
