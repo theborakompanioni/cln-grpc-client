@@ -18,7 +18,7 @@ plugins {
     id 'idea'
     id 'nebula.release' version '17.2.2'
     id 'nebula.lint' version '18.1.0'
-    id 'com.netflix.nebula.project' version '10.1.2'
+    id 'com.netflix.nebula.project' version '10.1.5'
     id 'com.github.spotbugs' version '5.0.13' apply false
     id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
 }
@@ -125,13 +125,11 @@ subprojects {
         includeEmptyDirs false
     }
 
-    sourceJar {
+    sourcesJar {
         // needed till duplicate bug in protobuf gradle plugin is resolved.
         // see https://github.com/google/protobuf-gradle-plugin/issues/522 (last checked 2023-01-18)
         duplicatesStrategy DuplicatesStrategy.EXCLUDE
-    }
 
-    task sourcesJar(type: Jar) {
         archiveClassifier.set('sources')
         from sourceSets.main.java
     }
