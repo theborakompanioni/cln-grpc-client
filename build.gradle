@@ -203,7 +203,7 @@ subprojects {
 
         enabled = subprojects.isEmpty() && !srcDirs.isEmpty()
 
-        ext.outputDir = file("$buildDir/delombok")
+        ext.outputDir = layout.buildDirectory.dir("./delombok").get().asFile
         outputs.dir(outputDir)
         srcDirs.each {
             inputs.dir(it)
@@ -227,7 +227,7 @@ subprojects {
         reportLevel = 'medium' // TODO: set to 'low' to also find 'low confidence issues'
         ignoreFailures = false
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
-        reportsDir = rootProject.file("$rootProject.buildDir/reports/spotbugs/$project.name")
+        reportsDir = rootProject.layout.buildDirectory.dir("./reports/spotbugs/$project.name").get().asFile
     }
     tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
         onlyIf { gradle.taskGraph.hasTask('build') }
@@ -242,7 +242,7 @@ subprojects {
         configFile = rootProject.file('./checkstyle.xml')
         maxErrors = 0
         ignoreFailures = false
-        reportsDir = rootProject.file("$rootProject.buildDir/reports/checkstyle/$project.name")
+        reportsDir = rootProject.layout.buildDirectory.dir("./reports/checkstyle/$project.name").get().asFile
     }
     tasks.withType(Checkstyle) {
         onlyIf { gradle.taskGraph.hasTask('build') }
