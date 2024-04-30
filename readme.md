@@ -13,6 +13,11 @@
 cln-grpc-client
 ===
 
+A gRPC client for [Core Lightning (CLN)](https://github.com/ElementsProject/lightning).
+
+### `cln-grpc-client-starter`
+A module containing [a Spring Boot Starter is also available](https://github.com/theborakompanioni/bitcoin-spring-boot-starter/blob/devel/cln-grpc-client/readme.md).
+
 
 ## Table of Contents
 
