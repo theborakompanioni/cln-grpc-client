@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [24.2.2] - 2024-04-30
+Release based on CLN [v24.02.2](https://github.com/ElementsProject/lightning/releases/tag/v24.02.2).
+
 ### Changed
 - grpc: regenerate using cln v24.02.2
 - upgrade: update lombok from v1.18.26 to v1.18.30
@@ -30,7 +33,8 @@ Release based on CLN [v23.05.2](https://github.com/ElementsProject/lightning/rel
 Initial release based on CLN [v23.05.1](https://github.com/ElementsProject/lightning/releases/tag/v23.05.1).
 
 
-[Unreleased]: https://github.com/theborakompanioni/cln-grpc-client/compare/23.8.1...HEAD
+[Unreleased]: https://github.com/theborakompanioni/cln-grpc-client/compare/24.2.2...HEAD
+[23.8.1]: https://github.com/theborakompanioni/cln-grpc-client/compare/23.8.1...24.2.2
 [23.8.1]: https://github.com/theborakompanioni/cln-grpc-client/compare/23.5.2...23.8.1
 [23.5.2]: https://github.com/theborakompanioni/cln-grpc-client/compare/23.5.1...23.5.2
 [23.5.1]: https://github.com/theborakompanioni/cln-grpc-client/releases/tag/23.5.1
