@@ -1,9 +1,7 @@
 package org.tbk.lightning.cln.grpc.config;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -12,8 +10,7 @@ import java.util.Objects;
         prefix = "org.tbk.lightning.cln.grpc",
         ignoreUnknownFields = false
 )
-@Getter
-@AllArgsConstructor(onConstructor = @__(@ConstructorBinding))
+@Data
 public class ClnClientAutoConfigProperties {
     private static final Duration DEFAULT_SHUTDOWN_TIMEOUT = Duration.ofSeconds(10);
 
