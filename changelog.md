@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- upgrade: update lombok from v1.18.26 to v1.18.30
+- 
 ## [23.8.1] - 2023-10-09
 Release based on CLN [v23.08.1](https://github.com/ElementsProject/lightning/releases/tag/v23.08.1).
 
