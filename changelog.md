@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- grpc: regenerate using cln v24.05
+
 ## [24.2.2] - 2024-04-30
 Release based on CLN [v24.02.2](https://github.com/ElementsProject/lightning/releases/tag/v24.02.2).
 
