@@ -75,6 +75,8 @@ Gradle is used for checksum and signature verification of dependencies.
 ```shell script
 # write metadata for dependency verification
 ./gradlew --write-verification-metadata pgp,sha256 --export-keys
+# update buildscript dependency locks
+./gradlew dependencies --write-locks
 ```
 
 See [Gradle Userguide: Verifying dependencies](https://docs.gradle.org/current/userguide/dependency_verification.html)
