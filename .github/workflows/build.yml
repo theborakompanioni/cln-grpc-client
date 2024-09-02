@@ -12,8 +12,8 @@ jobs:
     name: "Gradle Wrapper Validation"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1
+      - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v3
 
   build:
     needs: validation
@@ -25,10 +25,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java-version }}
@@ -37,13 +37,15 @@ jobs:
         run: java --version
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' && github.ref != 'refs/heads/devel' }}
 
       - name: Lint Gradle File
         run: ./gradlew autoLintGradle
 
       - name: Build project
-        run: ./gradlew build -x test
+        run: ./gradlew build spotbugsMain -x test
 
       - name: Unit Test
         run: ./gradlew test
@@ -58,16 +60,9 @@ jobs:
         run: ./gradlew --info --stacktrace -Prelease.useLastTag=true candidate
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: |
           startsWith(github.ref, 'refs/tags/v')
         with:
           name: Package
           path: ./**/build/libs/*.jar
-
-      - name: Cleanup Gradle Cache
-        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
-        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
