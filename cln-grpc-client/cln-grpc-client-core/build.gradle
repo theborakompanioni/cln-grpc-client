@@ -32,7 +32,7 @@ def clnProtoFiles = [
         'primitives.proto'
 ]
 
-task prepareDirs {
+task prepareClnProtoDirs {
     mustRunAfter clean
     outputs.upToDateWhen { protoOriginalTarget.asFile.exists() && protoProcessedTarget.asFile.exists() }
 
@@ -42,8 +42,17 @@ task prepareDirs {
     }
 }
 
+task cleanClnProtoDirs {
+    outputs.upToDateWhen { !protoOriginalTarget.asFile.exists() && !protoProcessedTarget.asFile.exists() }
+
+    doLast {
+        delete("${protoOriginalTarget.asFile}")
+        delete("${protoProcessedTarget.asFile}")
+    }
+}
+
 task fetchClnProtoFiles() {
-    dependsOn prepareDirs
+    dependsOn prepareClnProtoDirs
 
     outputs.upToDateWhen {
         clnProtoFiles
@@ -65,7 +74,7 @@ task fetchClnProtoFiles() {
 }
 
 task processClnProtoFiles(type: Copy) {
-    dependsOn prepareDirs, fetchClnProtoFiles, processResources
+    dependsOn prepareClnProtoDirs, fetchClnProtoFiles, processResources
 
     from protoOriginalTarget
     into protoProcessedTarget
