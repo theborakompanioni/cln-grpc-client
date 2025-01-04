@@ -51,7 +51,7 @@ task cleanClnProtoDirs {
     }
 }
 
-task fetchClnProtoFiles() {
+task fetchClnProtoFiles {
     dependsOn prepareClnProtoDirs
 
     outputs.upToDateWhen {
