@@ -149,6 +149,24 @@ class ClnGrpcClientIntegrationTest {
         assertThat(response.getOfferIssuer(), is("AB"));
         assertThat(response.getOfferIssuerId(), equalTo(ByteString.fromHex("033f4bbfcd67bd0fc858499929a3255d063999ee23f4c5e12b8b1089e132b3e408")));
     }
+
+    @Test
+    void itShouldSuccessfullyInvokeDecodeBlockingBolt12Invoice() {
+        // taken from https://github.com/lnbc1QWFyb24/bolt12-decoder on 2025-01-03
+        String bolt12 = "lni1qqgqp9et744ne2r7zg3kq0vz860xgyxvqwryaup9lh50kkranzgcdnn2fgvx390wgj5jd07rwr3vxeje0glc7qsp2dxt6avc2avfxg2avl58psv7xflwzhfmv2gtm9wytkn5c7uusvpq9qr8h0nh66qpv7xa9hyguuc3ar3y42qlxsxcy0genwt8d7tsamvaqqeec63yjlkyyd05gkfzrwwvaxl8y9jjxemwsqrnc2j6xdjrg0yzj7k5x2pwvyga3heejhra24a0wushp6rfqq3jdf2glnwaydeml333v4xrap92ek3q9qgm7370exxs45f68p42sqqpqrslyuarpkn5r78nquzma65rrs6jqvqcdgzcyypdf0d2vqmqu02ruex9mskrzmr5d3rrzygttq425w89c3z3arqh8f9ql5qe5quxfmcztl0gldv8mxy3sm8x5jscdz27u39fy6luxu8zcdn9j73l3uppfjclju37sq4pfcne5gw9l9vydpsnfwlnkc0f2ncu786mxzpss0szqfhylpxyl0pjvnwheheful2mjtu0zvvnfwmrkzm7e5flnh5dmpmxzqz998um6nckle0n2sse3lad2cm2m87wqssjn8rtrstgw7fr4cq7jcss3aspnmgg2sua776240454kl9f5sv9t3cfe58xur7mch6q9rz6u4sdffra2cz7nwvw2xcmty0eut4dayy03n6guksvrvtt237tl6264ks8yyfhqjspn9uj9zg4wrhpsvrw56skaqcfd3ul6d6tlpw3qrz5jnuz609ee7czc6n629rm5ccncackrspca3mpzk4phrjwcc9hukuxck2u93wkpmp0hx8rn2c7pd65hsl8hwkzqemkx7p2g0zkx92gzvyg5cfpktvm42g57d6spjy7clkwtrtz72pmm4a990phfa3exzldwsydqxpq3tepwk5v9474zmmd98ttyyzx058t2sf5dvpn73hlvdhnycv55t4lsv6a9080a83dl9s7mf02ukt48nhche6he45j9npx87jk7eyhzxsrjpzz0t5e2n206an9ma59uhatgsuqqqq86qqqqqxgq9zqqqqqqqqqqp7sqqqqqqqqqcdgqqqpfqyvm5xhjdxqy72sg8wkseztv2dpeudmcx0ahz6ezxx86thwrzvjfq400rnhh7vmcrs6k4qxqvx5zhqxqsqqzczzq3jdf2glnwaydeml333v4xrap92ek3q9qgm7370exxs45f68p42srcyql379vw777n9rmj66ze9qmq8agvuz9fdg6nnu5wcdn6ppvrh3rjcftld8rtakadngfdalgq9czau46yfa07pqpeffqlx8qaruzv7w5qs";
+
+        DecodeResponse response = clnNodeBlockingStub.decode(DecodeRequest.newBuilder()
+                .setString(bolt12)
+                .build());
+
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getItemType(), is(DecodeResponse.DecodeType.BOLT12_INVOICE));
+        assertThat(response.getInvoiceAmountMsat().getMsat(), is(100_000L));
+        assertThat(response.getInvoicePaymentHash(), equalTo(ByteString.fromHex("eeb43225b14d0e78dde0cfedc5ac88c63e97770c4c924157bc73bdfccde070d5")));
+        assertThat(response.getDescription(), is(""));
+        assertThat(response.getInvoiceRelativeExpiry(), is(60));
+        assertThat(response.hasFeatures(), is(true));
+    }
     /**
      * decode - end
      ************************************************************/
