@@ -111,18 +111,19 @@ class ClnGrpcClientIntegrationTest {
      ************************************************************/
 
     /************************************************************
-     * decodePay
+     * decode
      **/
     @Test
-    void itShouldSuccessfullyInvokeDecodePayBlocking() {
+    void itShouldSuccessfullyInvokeDecodeBlockingBolt11() {
         // taken from https://www.bolt11.org/ on 2023-06-18
         String bolt11 = "lnbc15u1p3xnhl2pp5jptserfk3zk4qy42tlucycrfwxhydvlemu9pqr93tuzlv9cc7g3sdqsvfhkcap3xyhx7un8cqzpgxqzjcsp5f8c52y2stc300gl6s4xswtjpc37hrnnr3c9wvtgjfuvqmpm35evq9qyyssqy4lgd8tj637qcjp05rdpxxykjenthxftej7a2zzmwrmrl70fyj9hvj0rewhzj7jfyuwkwcg9g2jpwtk3wkjtwnkdks84hsnu8xps5vsq4gj5hs";
 
-        DecodepayResponse response = clnNodeBlockingStub.decodePay(DecodepayRequest.newBuilder()
-                .setBolt11(bolt11)
+        DecodeResponse response = clnNodeBlockingStub.decode(DecodeRequest.newBuilder()
+                .setString(bolt11)
                 .build());
 
         assertThat(response, is(notNullValue()));
+        assertThat(response.getItemType(), is(DecodeResponse.DecodeType.BOLT11_INVOICE));
         assertThat(response.getAmountMsat().getMsat(), is(1_500_000L));
         assertThat(response.getPaymentHash(), equalTo(ByteString.fromHex("90570c8d3688ad5012aa5ff982606971ae46b3f9df0a100cb15f05f61718f223")));
         assertThat(response.getDescription(), is("bolt11.org"));
@@ -130,8 +131,26 @@ class ClnGrpcClientIntegrationTest {
         assertThat(response.getMinFinalCltvExpiry(), is(40));
         assertThat(response.hasFeatures(), is(true));
     }
+
+    @Test
+    void itShouldSuccessfullyInvokeDecodeBlockingBolt12Offer() {
+        // taken from https://github.com/lnbc1QWFyb24/bolt12-decoder on 2025-01-03
+        String bolt12 = "lno1qgsqvgnwgcg35z6ee2h3yczraddm72xrfua9uve2rlrm9deu7xyfzrc2q42xjurnyyfqys2zzcssx06thlxk00g0epvynxff5vj46p3en8hz8ax9uy4ckyyfuyet8eqg";
+
+        DecodeResponse response = clnNodeBlockingStub.decode(DecodeRequest.newBuilder()
+                .setString(bolt12)
+                .build());
+
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getItemType(), is(DecodeResponse.DecodeType.BOLT12_OFFER));
+        assertThat(response.getOfferAmount(), is(0L));
+        assertThat(response.getOfferId(), equalTo(ByteString.fromHex("45880e501c65e9060d33128d2de1d23ff52ae768b2bcb62bef262d90b741b8cd")));
+        assertThat(response.getOfferDescription(), is("Tips!"));
+        assertThat(response.getOfferIssuer(), is("AB"));
+        assertThat(response.getOfferIssuerId(), equalTo(ByteString.fromHex("033f4bbfcd67bd0fc858499929a3255d063999ee23f4c5e12b8b1089e132b3e408")));
+    }
     /**
-     * decodePay - end
+     * decode - end
      ************************************************************/
 
     /************************************************************

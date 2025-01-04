@@ -1,12 +1,13 @@
 
 org.tbk.spring.testcontainer.cln:
   enabled: true
-  image: 'polarlightning/clightning:24.08.1'
+  image: 'polarlightning/clightning:24.11.1'
   port: 19735
   commands:
     - '--alias=tbk-cln-grpc-client-test'
     - '--bitcoin-rpcuser=satoshi'
     - '--bitcoin-rpcpassword=correct_horse_battery_staple_21m'
+    - '--grpc-host=0.0.0.0'
     - '--grpc-port=19935'
 
 org.tbk.lightning.cln.grpc:
