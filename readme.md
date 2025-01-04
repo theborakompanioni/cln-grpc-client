@@ -1,6 +1,6 @@
 [![Build](https://github.com/theborakompanioni/cln-grpc-client/actions/workflows/build.yml/badge.svg)](https://github.com/theborakompanioni/cln-grpc-client/actions/workflows/build.yml)
 [![GitHub Release](https://img.shields.io/github/release/theborakompanioni/cln-grpc-client.svg?maxAge=3600)](https://github.com/theborakompanioni/cln-grpc-client/releases/latest)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.theborakompanioni/cln-grpc-client-core.svg?maxAge=3600)](https://search.maven.org/#search|g%3A%22io.github.theborakompanioni%22)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.theborakompanioni/cln-grpc-client-core.svg?maxAge=3600)](https://central.sonatype.com/artifact/io.github.theborakompanioni/cln-grpc-client-core)
 [![License](https://img.shields.io/github/license/theborakompanioni/cln-grpc-client.svg?maxAge=2592000)](https://github.com/theborakompanioni/cln-grpc-client/blob/master/LICENSE)
 
 
