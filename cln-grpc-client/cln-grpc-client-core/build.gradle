@@ -24,6 +24,7 @@ dependencies {
     integTestImplementation "io.github.theborakompanioni:spring-testcontainer-cln-starter:${bitcoinSpringBootStarterVersion}"
 }
 
+def clnProtoTaskGroupName = 'CLN'
 def protoOriginalTarget = layout.projectDirectory.dir("src/main/resources/cln/cln-grpc/proto")
 def protoProcessedTarget = layout.projectDirectory.dir("src/main/java/org/tbk/lightning/cln/grpc/client")
 
@@ -88,3 +89,10 @@ option java_multiple_files = true;
 }
 
 generateProto.dependsOn(processClnProtoFiles)
+
+[
+    prepareClnProtoDirs,
+    cleanClnProtoDirs,
+    fetchClnProtoFiles,
+    processClnProtoFiles,
+].forEach { it -> it.group = clnProtoTaskGroupName }
