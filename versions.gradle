@@ -1,12 +1,12 @@
 ext {
     clnVersion = 'v24.11.1'
-    grpcVersion = '1.56.0'
-    protobufVersion = '3.22.3'
+    grpcVersion = '1.69.0'
+    protobufVersion = '4.29.2'
     protocVersion = protobufVersion
     lombokVersion = '1.18.30'
     findsecbugsPluginVersion = '1.12.0'
     checkstyleVersion = '10.3.4'
-    protobufGradleVersion = '0.9.3'
+    protobufGradleVersion = '0.9.4'
     springBootGradlePluginVersion = '3.4.0'
     bitcoinSpringBootStarterVersion = '0.14.0'
 }
