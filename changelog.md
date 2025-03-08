@@ -6,12 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [24.11.1] - 2025-01-04
+Release based on CLN [v25.02](https://github.com/ElementsProject/lightning/releases/tag/v25.02).
+
 ### Changed
+- grpc: regenerate using cln v25.02
 - update grpc from v1.56.0 to v1.69.0 
 - update jackson-jr-all from v2.16.1 to v2.18.2 
 - update protobuf from v3.22.3 to v4.29.2
 
 ## [24.11.1] - 2025-01-04
+Release based on CLN [v24.11.1](https://github.com/ElementsProject/lightning/releases/tag/v24.11.1).
 
 ### Changed
 - grpc: regenerate using cln v24.11.1
