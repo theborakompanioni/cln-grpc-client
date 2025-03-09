@@ -46,10 +46,15 @@ test:
 
 # run integration tests
 [group("development")]
-integrationTest:
+test-integration:
     @./gradlew integrationTest --rerun-tasks --no-parallel
 
-# run integration tests
+# update metadata for dependency verification
+[group("development")]
+update-verification:
+   @./gradlew dependencies --write-verification-metadata pgp,sha256 --export-keys --write-locks
+
+# regenerate proto definitions
 [group("development")]
 rebuild-proto:
     @./gradlew cleanClnProtoDirs generateProto --rerun-tasks --no-parallel
