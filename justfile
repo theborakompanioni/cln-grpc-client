@@ -20,9 +20,9 @@ evaluate:
 # print system information such as OS and architecture
 [group("project-agnostic")]
 system-info:
-  @echo "architecture: {{arch()}}"
-  @echo "os: {{os()}}"
-  @echo "os family: {{os_family()}}"
+    @echo "architecture: {{arch()}}"
+    @echo "os: {{os()}}"
+    @echo "os family: {{os_family()}}"
 
 # clean (remove) the build artifacts
 [group("development")]
@@ -31,8 +31,8 @@ clean:
 
 # compile the project
 [group("development")]
-build:
-    @./gradlew build -x test
+build *args='':
+    @./gradlew build -x test {{args}}
 
 # list dependency tree of this project
 [group("development")]
@@ -41,8 +41,8 @@ dependencies:
 
 # run unit tests
 [group("development")]
-test:
-    @./gradlew test
+test *args='':
+    @./gradlew test {{args}}
 
 # run integration tests
 [group("development")]
@@ -52,7 +52,7 @@ test-integration:
 # update metadata for dependency verification
 [group("development")]
 update-verification:
-   @./gradlew dependencies --write-verification-metadata pgp,sha256 --export-keys --write-locks
+    @./gradlew dependencies --write-verification-metadata pgp,sha256 --export-keys --write-locks
 
 # regenerate proto definitions
 [group("development")]
