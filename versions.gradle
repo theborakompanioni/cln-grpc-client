@@ -5,7 +5,7 @@ ext {
     protocVersion = protobufVersion
     lombokVersion = '1.18.36'
     findsecbugsPluginVersion = '1.13.0'
-    checkstyleVersion = '10.3.4'
+    checkstyleVersion = '10.21.4'
     protobufGradleVersion = '0.9.4'
     springBootGradlePluginVersion = '3.4.0'
     bitcoinSpringBootStarterVersion = '0.14.0'
