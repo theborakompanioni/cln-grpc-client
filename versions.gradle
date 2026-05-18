@@ -1,7 +1,7 @@
 ext {
     clnVersion = 'v25.02'
     grpcVersion = '1.71.0'
-    protobufVersion = '4.30.0'
+    protobufVersion = '4.34.1'
     protocVersion = protobufVersion
     lombokVersion = '1.18.46'
     findsecbugsPluginVersion = '1.14.0'
