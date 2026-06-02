@@ -20,7 +20,7 @@ buildscript {
 plugins {
     id 'idea'
     id 'nebula.release' version '17.2.2'
-    id 'nebula.lint' version '18.1.0'
+    id 'nebula.lint' version '21.2.1'
     id 'com.netflix.nebula.project' version '10.1.5'
     id 'com.github.spotbugs' version '5.2.5' apply false
     id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
