@@ -6,7 +6,7 @@ ext {
     lombokVersion = '1.18.46'
     findsecbugsPluginVersion = '1.14.0'
     checkstyleVersion = '10.26.1'
-    protobufGradleVersion = '0.9.4'
+    protobufGradleVersion = '0.10.0'
     springBootGradlePluginVersion = '3.4.0'
     bitcoinSpringBootStarterVersion = '0.14.0'
 }
