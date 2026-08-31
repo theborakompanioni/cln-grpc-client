@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- update grpc from v1.69.0 to v1.71.0
-- update protobuf from v4.29.2 to v4.30.0
-- update lombok from v1.18.30 to v1.18.36
-- update findsecbugs from v1.12.0 to v1.13.0
-- update checkstyle from v10.3.4 to v10.21.4
+- update java from v17 to v21
+- update gradle from v8 to v9.7.1
+- update grpc from v1.69.0 to v1.83.1
+- update protobuf from v4.29.2 to v4.36.0
+- update lombok from v1.18.30 to v1.18.46
+- update findsecbugs from v1.12.0 to v1.14.0
+- update checkstyle from v10.3.4 to v12.3.1
 
 ## [25.2.0] - 2025-03-09
 Release based on CLN [v25.02](https://github.com/ElementsProject/lightning/releases/tag/v25.02).

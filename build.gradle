@@ -1,5 +1,6 @@
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
 import com.github.spotbugs.snom.SpotBugsTask
-import io.franzbecker.gradle.lombok.task.DelombokTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
@@ -20,11 +21,12 @@ buildscript {
 
 plugins {
     id 'idea'
-    id 'nebula.release' version '17.2.2'
-    id 'nebula.lint' version '18.1.0'
-    id 'com.netflix.nebula.project' version '10.1.5'
-    id 'com.github.spotbugs' version '5.2.5' apply false
-    id 'io.franzbecker.gradle-lombok' version '5.0.0' apply false
+    id 'nebula.release' version '21.1.0'
+    id 'nebula.lint' version '21.2.2'
+    id 'com.netflix.nebula.project' version '13.1.2'
+    id 'org.jreleaser' version '1.20.0' apply false
+    id 'com.github.spotbugs' version '6.5.11' apply false
+    id 'io.freefair.lombok' version '9.5.0' apply false
 }
 
 contacts {
@@ -90,11 +92,16 @@ subprojects {
     apply plugin: 'com.netflix.nebula.project'
     apply plugin: 'com.netflix.nebula.info'
     apply plugin: 'com.netflix.nebula.integtest-standalone'
-    apply plugin: 'io.franzbecker.gradle-lombok'
+    apply plugin: 'io.freefair.lombok'
     apply plugin: 'io.spring.dependency-management'
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_21.getMajorVersion())
+        }
+    }
 
     repositories {
         mavenCentral()
@@ -109,7 +116,7 @@ subprojects {
     dependencies {
         compileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
         testCompileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
-        spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${findsecbugsPluginVersion}"
+        spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${rootProject.ext.findsecbugsPluginVersion}"
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -126,13 +133,13 @@ subprojects {
     jar {
         exclude('**/*.proto')
 
-        includeEmptyDirs false
+        includeEmptyDirs = false
     }
 
     sourcesJar {
         // needed till duplicate bug in protobuf gradle plugin is resolved.
         // see https://github.com/google/protobuf-gradle-plugin/issues/522 (last checked 2023-01-18)
-        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
         archiveClassifier.set('sources')
         from sourceSets.main.java
@@ -172,63 +179,46 @@ subprojects {
     }
 
     lombok {
-        version = "${lombokVersion}"
-        sha256 = null // skip verifyLombok task - will be done by gradle dependency verification
+        version = "${rootProject.ext.lombokVersion}"
     }
 
     tasks.withType(Test).configureEach {
         testLogging {
             // set options for log level LIFECYCLE
             events TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
-            showExceptions true
-            exceptionFormat TestExceptionFormat.FULL
-            showCauses true
-            showStackTraces true
+            showExceptions = true
+            exceptionFormat = TestExceptionFormat.FULL
+            showCauses = true
+            showStackTraces = true
+        }
 
-            afterSuite { desc, result ->
-                if (!desc.parent) { // will match the outermost suite
+        addTestListener(new TestListener() {
+            @Override
+            void afterSuite(TestDescriptor suite, TestResult result) {
+                if (!suite.parent) { // will match the outermost suite
                     def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
                     def startItem = '|  ', endItem = '  |'
                     def repeatLength = startItem.length() + output.length() + endItem.length()
                     println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
                 }
             }
-        }
+        })
     }
 
     tasks.register('dependencyTree', DependencyReportTask) {}
 
-    task delombok(type: DelombokTask, dependsOn: compileJava) {
-        onlyIf { project.hasProperty('javadocEnabled') }
-        def srcDirs = sourceSets.main.java.srcDirs.findAll { it.exists() }
-
-        enabled = subprojects.isEmpty() && !srcDirs.isEmpty()
-
-        ext.outputDir = layout.buildDirectory.dir("./delombok").get().asFile
-        outputs.dir(outputDir)
-        srcDirs.each {
-            inputs.dir(it)
-            args(it, "-d", outputDir)
-        }
-
-        doFirst {
-            outputDir.deleteDir()
-        }
-    }
-
     javadoc {
         onlyIf { project.hasProperty('javadocEnabled') }
-        dependsOn delombok
-        source = delombok.outputDir
+        source = delombok
         failOnError = false
     }
 
     spotbugs {
-        effort = 'max'
-        reportLevel = 'medium' // TODO: set to 'low' to also find 'low confidence issues'
+        effort = Effort.MAX
+        reportLevel = Confidence.valueOf('MEDIUM') // TODO: set to 'low' to also find 'low confidence issues'
         ignoreFailures = false
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
-        reportsDir = rootProject.layout.buildDirectory.dir("./reports/spotbugs/$project.name").get().asFile
+        reportsDir = layout.buildDirectory.dir("./reports/spotbugs").get().asFile
     }
     tasks.withType(SpotBugsTask).configureEach {
         onlyIf { gradle.taskGraph.hasTask('build') }
@@ -239,7 +229,7 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "${checkstyleVersion}"
+        toolVersion = "${rootProject.ext.checkstyleVersion}"
         configFile = rootProject.file('./checkstyle.xml')
         maxErrors = 0
         ignoreFailures = false
@@ -278,6 +268,5 @@ subprojects {
 // enable publishing for all subproject except for "example applications"
 configure(subprojects.findAll { project -> project.subprojects.isEmpty() }) {
     apply from: "${project.rootDir}/publish.gradle"
+    apply from: "${project.rootDir}/deploy.gradle"
 }
-
-
