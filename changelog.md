@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- grpc: regenerate using cln v26.06
 - update java from v17 to v21
 - update gradle from v8 to v9.7.1
 - update grpc from v1.69.0 to v1.83.1
