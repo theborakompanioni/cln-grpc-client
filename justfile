@@ -51,8 +51,28 @@ test-integration:
 
 # update metadata for dependency verification
 [group("development")]
-update-verification:
-    @./gradlew dependencies --write-verification-metadata pgp,sha256 --export-keys --write-locks
+update-verification *args='':
+    @./gradlew \
+      -Dorg.gradle.caching=false \
+      -Dorg.gradle.configureondemand=false \
+      -Dorg.gradle.parallel=false \
+      dependencies dependencyTree \
+      --write-verification-metadata pgp,sha256 --export-keys --write-locks {{args}}
+
+# update metadata for dependency verification and refresh keys
+[group("development")]
+update-verification-refresh-keys:
+    @just update-verification --refresh-keys
+
+# update dependency lockfiles
+[group("development")]
+update-lockfiles:
+    @./gradlew \
+     -Dorg.gradle.caching=false \
+     -Dorg.gradle.configureondemand=false \
+     -Dorg.gradle.parallel=false \
+     dependencies dependencyTree \
+     --write-locks
 
 # regenerate proto definitions
 [group("development")]

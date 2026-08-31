@@ -1,3 +1,4 @@
+import com.github.spotbugs.snom.SpotBugsTask
 import io.franzbecker.gradle.lombok.task.DelombokTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -35,7 +36,7 @@ contacts {
 
 def testcontainersRyukDisabled = System.getenv("TESTCONTAINERS_RYUK_DISABLED") ?: "true"
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy {
         // check for updates in modules every build
         cacheChangingModulesFor 0, 'seconds'
@@ -68,7 +69,7 @@ allprojects {
 configure(rootProject) {
     defaultTasks 'clean', 'build', 'integrationTest'
 
-    task clean {
+    tasks.register('clean').configure {
         doLast {
             delete fileTree("${rootProject.projectDir}") {
                 include '**/*.log'
@@ -137,9 +138,13 @@ subprojects {
         from sourceSets.main.java
     }
 
-    task testJar(type: Jar) {
+    tasks.register('testJar', Jar) {
         archiveClassifier.set('test')
         from sourceSets.test.output
+    }
+
+    tasks.named("assemble") {
+        dependsOn(testJar)
     }
 
     test {
@@ -166,16 +171,12 @@ subprojects {
         }
     }
 
-    artifacts {
-        archives testJar
-    }
-
     lombok {
         version = "${lombokVersion}"
         sha256 = null // skip verifyLombok task - will be done by gradle dependency verification
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         testLogging {
             // set options for log level LIFECYCLE
             events TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED
@@ -195,7 +196,7 @@ subprojects {
         }
     }
 
-    task dependencyTree(type: DependencyReportTask) {}
+    tasks.register('dependencyTree', DependencyReportTask) {}
 
     task delombok(type: DelombokTask, dependsOn: compileJava) {
         onlyIf { project.hasProperty('javadocEnabled') }
@@ -229,7 +230,7 @@ subprojects {
         excludeFilter = rootProject.file('./spotbugs-exclude.xml')
         reportsDir = rootProject.layout.buildDirectory.dir("./reports/spotbugs/$project.name").get().asFile
     }
-    tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+    tasks.withType(SpotBugsTask).configureEach {
         onlyIf { gradle.taskGraph.hasTask('build') }
         reports {
             html.required = true
@@ -244,7 +245,7 @@ subprojects {
         ignoreFailures = false
         reportsDir = rootProject.layout.buildDirectory.dir("./reports/checkstyle/$project.name").get().asFile
     }
-    tasks.withType(Checkstyle) {
+    tasks.withType(Checkstyle).configureEach {
         onlyIf { gradle.taskGraph.hasTask('build') }
         reports {
             xml.required = false
@@ -252,7 +253,7 @@ subprojects {
         }
     }
 
-    tasks.withType(AbstractArchiveTask) {
+    tasks.withType(AbstractArchiveTask).configureEach {
         // activate reproducible archives
         // see https://docs.gradle.org/current/userguide/working_with_files.html#sec:reproducible_archives
         preserveFileTimestamps = false
