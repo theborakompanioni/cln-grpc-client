@@ -63,6 +63,12 @@ allprojects {
         // duplicate dependency false positives from "compileOnly 'javax.servlet:javax.servlet-api'"
         excludedRules = ['duplicate-dependency-class']
     }
+
+    dependencyLocking {
+        lockMode = LockMode.STRICT
+        // locks all project configurations (but not the `buildscript` ones)
+        lockAllConfigurations()
+    }
 }
 
 configure(rootProject) {
@@ -92,6 +98,12 @@ subprojects {
     apply plugin: 'io.freefair.lombok'
     apply plugin: 'io.spring.dependency-management'
 
+    configurations.configureEach {
+        resolutionStrategy {
+            preferProjectModules()
+        }
+    }
+
     java {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
@@ -112,8 +124,7 @@ subprojects {
         spotbugsPlugins "com.h3xstream.findsecbugs:findsecbugs-plugin:${rootProject.ext.findsecbugsPluginVersion}"
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
