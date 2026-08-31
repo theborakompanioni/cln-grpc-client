@@ -7,9 +7,6 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
     apply from: 'versions.gradle'
-    repositories {
-        mavenCentral()
-    }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootGradlePluginVersion}")
         classpath("com.google.protobuf:protobuf-gradle-plugin:${protobufGradleVersion}")
@@ -101,10 +98,6 @@ subprojects {
         toolchain {
             languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_21.getMajorVersion())
         }
-    }
-
-    repositories {
-        mavenCentral()
     }
 
     dependencyManagement {
