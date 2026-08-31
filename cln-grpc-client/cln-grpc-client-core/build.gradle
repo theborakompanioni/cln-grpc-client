@@ -6,6 +6,16 @@ apply from: "${project.rootDir}/proto.gradle"
 
 description = 'cln grpc client package'
 
+configurations.configureEach {
+    resolutionStrategy {
+        dependencySubstitution {
+            // workaround for https://github.com/testcontainers/testcontainers-java/issues/11212
+            // remove when upgrading to >= v2
+            substitute module("org.testcontainers:testcontainers") using module("org.testcontainers:testcontainers:1.21.4")
+        }
+    }
+}
+
 dependencies {
     api "io.grpc:grpc-protobuf:${rootProject.ext.grpcVersion}"
     api "io.grpc:grpc-stub:${rootProject.ext.grpcVersion}"
