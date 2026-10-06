@@ -3,7 +3,7 @@ ext {
     grpcVersion = '1.83.1'
     protobufVersion = '4.36.0'
     protocVersion = protobufVersion
-    lombokVersion = '1.18.46'
+    lombokVersion = '1.18.48'
     findsecbugsPluginVersion = '1.14.0'
     checkstyleVersion = '12.3.1'
     protobufGradleVersion = '0.10.0'
