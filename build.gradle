@@ -19,7 +19,7 @@ buildscript {
 plugins {
     id 'idea'
     id 'nebula.release' version '21.1.0'
-    id 'nebula.lint' version '21.2.2'
+    id 'nebula.lint' version '21.3.0'
     id 'com.netflix.nebula.project' version '13.1.2'
     id 'org.jreleaser' version '1.20.0' apply false
     id 'com.github.spotbugs' version '6.5.11' apply false
